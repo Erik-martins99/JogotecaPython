@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+  </head>
+    <body>
+        <div class="container">
+            <!-- código omitido -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %} 
+                    <ul id="messages" class="list-unstyled">
+                    {% for message in messages %}
+                        <li class="alert alert-success">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <!-- código omitido -->
+
+            <div class="wrapper fadeInDown">
+                <div id="formContent">
+
+                <div class="page-header">
+                    <h1 class="primary-title">{{ titulo }}</h1>
+                </div>
+
+                <form method="POST" action="{{ url_for('autenticar') }}">
+                        <input type="hidden" name="proxima" value="{{ proxima }}">
+                    <div>
+                        <input type="text" id="login" class="fadeIn second" name="usuario" placeholder="login">
+                    </div>
+                    <div>
+                        <input type="password" id="password" class="fadeIn third" name="senha" placeholder="password">
+                    </div>
+                    <div>
+                        <input type="submit" class="fadeIn fourth" value="Log In">
+                    </div>
+                    <form>
+                        <a href="http://127.0.0.1:5000/create_user" class="fadeIn fourth">Register</a>
+                    </form>
+                </form>
+            
+                <!-- Remind Passowrd -->
+                <!--<div id="formFooter">
+                    <a class="underlineHover" href="#">Forgot Password?</a>
+                </div>-->
+            
+                </div>
+            </div>
+        </div>
+    </body>
+</html> 

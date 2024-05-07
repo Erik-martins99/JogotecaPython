@@ -1,0 +1,35 @@
+{% extends 'template.html' %}
+{% block conteudo %}
+
+        <a class="btn btn-primary btn-adicionar" href="{{ url_for('novo') }}"> Adicionar</a>
+        <a class="btn btn-danger" href="{{ url_for('logout') }}">Sair</a>
+        <table class="table table-striped table-dark table-responsive table-bordered">
+            <thead class="thead-default">
+                <tr>
+                    <th>  </th>
+                    <th>Nome</th>
+                    <th>Calssificacao</th>
+                    <th>Console</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jogo in jogos %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ jogo.nome }}</td>
+                    <td>{{ jogo.categoria }}</td>
+                    <td>{{ jogo.console }}</td>
+                    <td><a href="{{ url_for('editar', id=jogo.id) }}" 
+                        class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Editar</a>
+                        <a href="{{ url_for('deletar', id=jogo.id) }}" 
+                        class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Deletar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--<a href="{{ url_for('novo') }}"><button type="submit" class="btn btn-primary btn-adicionar">Adicionar</button></a>
+        <form action="/logout">
+            <button type="submit" class="btn btn-danger">Sair</button>
+        </form>-->
+    {% endblock %}

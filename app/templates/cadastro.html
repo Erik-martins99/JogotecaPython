@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  </head>
+    <body>
+        <div class="container">
+            <!-- código omitido -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %} 
+                    <ul id="messages" class="list-unstyled">
+                    {% for message in messages %}
+                        <li class="alert alert-success">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <!-- código omitido -->
+
+            <div class="wrapper fadeInDown">
+                <div id="formContent">
+
+                    <div class="page-header">
+                        <h1 class="primary-title">{{ titulo }}</h1>
+                    </div>
+
+                    <form method="post" action="{{ url_for('register') }}" enctype="multipart/form-data">
+                        <div class="personal-image">
+                            <figure class="personal-figure">
+                                <img src="{{ url_for('imagem', nome_arquivo='capaPadrao.jpg') }}" class="personal-avatar" alt="avatar">
+                                <label class="fileContainer">
+                                    Adicionar Foto
+                                    <input type="file" class="form-control" name="arquivo" accept=".jpg">
+                                </label>
+                            </figure>
+                        </div>
+                            <input type="hidden" name="proxima" value="{{ proxima }}">
+                        <div>
+                            <input type="text" id="user" class="fadeIn second" name="usuario" placeholder="name">
+                        </div>
+                        <div>
+                            <input type="text" id="nickname" class="fadeIn second" name="nickname" placeholder="nickname">
+                        </div>
+                        <div>
+                            <input type="password" id="senha" class="fadeIn third" name="senha" placeholder="password">
+                        </div>
+                        <div>
+                            <input type="password" id="confirma_senha" class="fadeIn third" name="confirma_senha" placeholder="confirm password">
+                        </div>
+                        <div>
+                            <input type="submit" class="fadeIn fourth" value="Register">
+                        </div>
+                        <div>
+                            <a class="fadeIn fourth" href="{{ url_for('login') }}">Voltar</a>
+                        </div>
+
+                    </form>
+            
+                    <!-- Remind Passowrd -->
+                    <!--<div id="formFooter">
+                        <a class="underlineHover" href="#">Forgot Password?</a>
+                    </div>-->
+            
+                </div>
+            </div>
+            <script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>
+                <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+        </div>
+    </body>
+</html> 
