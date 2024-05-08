@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+
 from config.config import config_dir
+
 
 
 class Server:

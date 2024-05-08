@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, session, flash, url_for, send_from_directory
+from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
+import time
+
 from app.models.jogo_model import Jogo
-from app.models.usuario_model import Usuario
 from app.instance import app, db
 from service.helpers.helpers import recupera_imagem, recupera_perfil, deleta_imagem, Formulario_jogo, Formulario_cadastro
-import time
-import os
+
 
 
 '''Cirando a rota -novo- para trazer a pagina html'''
