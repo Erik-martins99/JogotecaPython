@@ -30,16 +30,17 @@
                 </div>
 
                 <form method="POST" action="{{ url_for('autenticar') }}">
-                        <input type="hidden" name="proxima" value="{{ proxima }}">
+                    {{ form.hidden_tag() }}
                     <div>
-                        <input type="text" id="login" class="fadeIn second" name="usuario" placeholder="login">
+                        {{ form.nickname.label }} {{ form.nickname(size=20) }}
                     </div>
                     <div>
-                        <input type="password" id="password" class="fadeIn third" name="senha" placeholder="password">
+                        {{ form.senha.label }} {{ form.senha(size=20) }}
                     </div>
                     <div>
-                        <input type="submit" class="fadeIn fourth" value="Log In">
+                        {{ form.login() }}
                     </div>
+                    <input type="hidden" name="proxima" value="{{ proxima }}">
                     <form>
                         <a href="http://127.0.0.1:5000/create_user" class="fadeIn fourth">Register</a>
                     </form>

@@ -1,7 +1,7 @@
 import os
 from app.instance import app
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
+from wtforms import StringField, SubmitField, validators, PasswordField
 
 
 class Formulario_jogo(FlaskForm):
@@ -11,11 +11,16 @@ class Formulario_jogo(FlaskForm):
     salvar = SubmitField('Salvar')
     
 class Formulario_cadastro(FlaskForm):
-    usuario = StringField('nome do jogo', [validators.data_required(), validators.length(min=1, max=250)])
-    nickname = StringField('categoria', [validators.data_required(), validators.length(min=1, max=25)])
-    senha = StringField('console', [validators.data_required(), validators.length(min=1, max=100)])
-    confirma_senha = StringField('console', [validators.data_required(), validators.length(min=1, max=100)])
+    usuario = StringField('usuario', [validators.data_required(), validators.length(min=1, max=250)])
+    nickname = StringField('nickname', [validators.data_required(), validators.length(min=1, max=25)])
+    senha = StringField('senha', [validators.data_required(), validators.length(min=1, max=100)])
+    confirma_senha = StringField('confirma_senha', [validators.data_required(), validators.length(min=1, max=100)])
     salvar = SubmitField('Salvar')
+    
+class FormularioUsuario(FlaskForm):
+    nickname = StringField('Nickname', [validators.DataRequired(), validators.Length(min=1, max=8)])
+    senha = PasswordField('Senha', [validators.DataRequired(), validators.Length(min=1, max=100)])
+    login = SubmitField('Login')
 
 def recupera_imagem(id):
     for nome_arquivo in os.listdir(app.config['UPLOAD_PATH']):

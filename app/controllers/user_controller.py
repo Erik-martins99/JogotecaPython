@@ -1,8 +1,10 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
+from flask_bcrypt import check_password_hash, generate_password_hash
+
 from app.models.usuario_model import Usuario
 from app.models.jogo_model import Jogo
 from app.instance import app, db
-from service.helpers.helpers import Formulario_cadastro, recupera_perfil
+from service.helpers.helpers import Formulario_cadastro, FormularioUsuario, recupera_perfil
 
 '''Definindo a rota home do site'''
 @app.route("/")
@@ -25,24 +27,66 @@ def index():
 @app.route('/login')
 def login():
     proxima = request.args.get('proxima')
-    return render_template('login.html', titulo='Faça seu login', proxima=proxima)
+    form = FormularioUsuario()
+    return render_template('login.html', titulo='Faça seu login', proxima=proxima, form=form)
 
 '''Cirando a rota -autenticar- para realizar a autenticação de usuário pela rota -login-'''
 @app.route('/autenticar', methods=['POST'])
 def autenticar():
+    form = FormularioUsuario(request.form)
+    
+    # Debugging: Verificar se os dados do formulário estão sendo recebidos
+    print(f"Form Data: Nickname - {form.nickname.data}, Senha - {form.senha.data}")
+    
+    # Encontrar usuário pelo nickname fornecido no formulário
+    usuario = Usuario.query.filter_by(nickname=form.nickname.data).first()
+    
+    if usuario:
+        print(f"Found user - Nickname: {usuario.nickname}, Hashed password: {usuario.senha}")
+    else:
+        print("User not found")
+    
+    if usuario and check_password_hash(usuario.senha, form.senha.data):
+        session['usuario_logado'] = form.nickname.data
+        flash(f"{form.nickname.data} logado com sucesso!")
+        proxima_pagina = request.form.get('proxima')
+        
+        if not proxima_pagina or proxima_pagina == 'None':
+            return redirect(url_for('index'))
+        return redirect(proxima_pagina)
+    else:
+        if not usuario:
+            flash('Usuário não encontrado!')
+        else:
+            flash('Senha incorreta!')
+        
+    return redirect(url_for('login'))
+
+
+    """
+    form = FormularioUsuario(request.form)
     usuarios = Usuario.query.order_by(Usuario.nickname)
+    usuario = Usuario.query.filter_by(nickname=form.nickname.data).first()
+    print(form.login.data)
+    print('teste1')
+    #print(usuario.nickname)
+    print(usuario.senha)
+    print(form.senha.data)
+    print('teste^^')
+    senha = check_password_hash(usuario.senha, form.senha.data)
     for usuario in usuarios:
-        if(request.form['usuario'] == usuario.nickname and request.form['senha'] == usuario.senha):
+        if usuario and senha:
             session['usuario_logado'] = request.form['usuario']
             flash(session['usuario_logado'] + ' logado com sucesso!')
             proxima_pagina = request.form['proxima']
-            print(proxima_pagina)
+            
             if(proxima_pagina == 'None'):
                 return redirect(url_for('index'))
             return redirect(proxima_pagina)
     else:
         flash('Usuário não logado!')
         return redirect(url_for('login'))
+    """
 
 '''Cirando a rota -logout- para realizar o logout do usuario'''
 @app.route('/logout')
@@ -67,6 +111,8 @@ def register():
     nickname = form.nickname.data
     senha = form.senha.data
     confirma_senha = form.confirma_senha.data
+    print(senha)
+    print(confirma_senha)
     
     usuario = Usuario.query.filter_by(nickname=nickname).first()
     if(usuario):
@@ -74,6 +120,7 @@ def register():
         return redirect(url_for('login'))
     
     if(senha == confirma_senha):
+        senha = generate_password_hash(senha)
         novo_usuario = Usuario(nome=nome,nickname=nickname, senha=senha)
         db.session.add(novo_usuario)
         
